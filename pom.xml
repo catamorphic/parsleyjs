@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <groupId>org.webjars</groupId>
     <artifactId>parsleyjs</artifactId>
-    <version>1.1.16-SNAPSHOT</version>
+    <version>2.0.0-RC3-SNAPSHOT</version>
     <name>Parsley.js</name>
     <description>WebJar for Parsley.js</description>
     <url>http://webjars.org</url>
@@ -44,23 +44,31 @@
     </licenses>
 
     <scm>
-        <url>http://github.com/webjars/parsleyjs</url>
-        <connection>scm:git:https://github.com/webjars/parsleyjs.git</connection>
-        <developerConnection>scm:git:https://github.com/webjars/parsleyjs.git</developerConnection>
+        <url>http://github.com/catamorphic/parsleyjs</url>
+        <connection>scm:git:https://github.com/catamorphic/parsleyjs.git</connection>
+        <developerConnection>scm:git:https://github.com/catamorphic/parsleyjs.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
+
+    <distributionManagement>
+      <repository>
+        <id>catamorphic-private</id>
+        <name>repo</name>
+        <url>http://catamorphic-repository.bitnamiapp.com/artifactory/releases</url>
+      </repository>
+    </distributionManagement>        
     
     <dependencies>
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>1.8.2</version>
+            <version>1.9.0</version>
         </dependency>
     </dependencies>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <upstream.version>1.1.15</upstream.version>
+        <upstream.version>2.0.0-rc3</upstream.version>
         <upstream.url>https://github.com/guillaumepotier/Parsley.js/archive</upstream.url>
         <destDir>${project.build.outputDirectory}/META-INF/resources/webjars/${project.artifactId}/${upstream.version}</destDir>
     </properties>
@@ -87,6 +95,16 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+                <version>1.4</version>
+            </plugin>            
+
+
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.7</version>
                 <executions>
@@ -99,12 +117,9 @@
                                 <unzip src="${project.build.directory}/${project.artifactId}.zip" dest="${project.build.directory}" />
                                 <echo message="moving resources" />
                                 <move todir="${destDir}">
-                                    <fileset dir="${project.build.directory}/Parsley.js-${upstream.version}">
-                                        <include name="component.json" />
+                                    <fileset dir="${project.build.directory}/Parsley.js-${upstream.version}">                                     
                                         <include name="dist/*.js" />
                                         <include name="i18n/*.js" />
-                                        <exclude name="i18n/_messages.en.js" />
-                                        <include name="parsley.jquery.json" />
                                     </fileset>
                                 </move>
                             </target>
